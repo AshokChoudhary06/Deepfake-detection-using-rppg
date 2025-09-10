@@ -1,0 +1,782 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DEEPSCAN | Cybernetic Deepfake Detection</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --cyber-blue: #00f0ff;
+            --cyber-pink: #ff00aa;
+            --cyber-purple: #aa00ff;
+            --dark-matrix: #0a0a12;
+            --neon-green: #00ff88;
+        }
+
+        body {
+            font-family: 'Rajdhani', 'Orbitron', sans-serif;
+            background-color: var(--dark-matrix);
+            color: white;
+            overflow-x: hidden;
+        }
+
+        @font-face {
+            font-family: 'Rajdhani';
+            src: url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;500;700&display=swap');
+        }
+
+        @font-face {
+            font-family: 'Orbitron';
+            src: url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+        }
+
+        /* CYBER GLITCH EFFECT */
+        .cyber-glitch {
+            position: relative;
+            animation: glitch 2s infinite;
+        }
+
+        @keyframes glitch {
+            0% { text-shadow: 2px 0 var(--cyber-blue), -2px 0 var(--cyber-pink); }
+            25% { text-shadow: -3px 0 var(--cyber-pink), 3px 0 var(--cyber-blue); }
+            50% { text-shadow: 2px 0 var(--cyber-purple), -2px 0 var(--neon-green); }
+            75% { text-shadow: -1px 0 var(--neon-green), 1px 0 var(--cyber-purple); }
+            100% { text-shadow: 2px 0 var(--cyber-blue), -2px 0 var(--cyber-pink); }
+        }
+
+        /* CYBER CARD */
+        .cyber-card {
+            background: rgba(20, 20, 30, 0.7);
+            border: 1px solid rgba(0, 240, 255, 0.3);
+            border-radius: 0;
+            box-shadow: 0 0 20px rgba(0, 240, 255, 0.1);
+            backdrop-filter: blur(10px);
+            transition: all 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .cyber-card:hover {
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.3);
+            transform: translateY(-5px);
+        }
+
+        .cyber-card::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: linear-gradient(
+                to bottom right,
+                rgba(0, 240, 255, 0) 0%,
+                rgba(0, 240, 255, 0.1) 50%,
+                rgba(0, 240, 255, 0) 100%
+            );
+            transform: rotate(30deg);
+            animation: hologram 6s infinite linear;
+        }
+
+        @keyframes hologram {
+            0% { top: -50%; left: -50%; }
+            100% { top: 150%; left: 150%; }
+        }
+
+        /* CYBER BUTTON */
+        .cyber-btn {
+            background: transparent;
+            color: var(--cyber-blue);
+            border: 2px solid var(--cyber-blue);
+            font-weight: bold;
+            letter-spacing: 1px;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.3s;
+            z-index: 1;
+        }
+
+        .cyber-btn:hover {
+            color: black;
+            box-shadow: 0 0 20px var(--cyber-blue);
+        }
+
+        .cyber-btn::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--cyber-blue);
+            transition: 0.5s;
+            z-index: -1;
+        }
+
+        .cyber-btn:hover::before {
+            left: 0;
+        }
+
+        /* MATRIX SCANLINES */
+        .scanlines {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: repeating-linear-gradient(
+                0deg,
+                rgba(0, 255, 136, 0.05),
+                rgba(0, 255, 136, 0.05) 1px,
+                transparent 1px,
+                transparent 2px
+            );
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        /* CYBER UPLOAD AREA */
+        .cyber-upload {
+            border: 2px dashed var(--cyber-blue);
+            background: rgba(0, 240, 255, 0.05);
+            transition: all 0.3s;
+        }
+
+        .cyber-upload:hover {
+            background: rgba(0, 240, 255, 0.1);
+            box-shadow: 0 0 30px rgba(0, 240, 255, 0.2);
+        }
+
+        /* PULSE ANIMATION */
+        .pulse {
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { box-shadow: 0 0 0 0 rgba(0, 240, 255, 0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(0, 240, 255, 0); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 240, 255, 0); }
+        }
+
+        /* CYBER PROGRESS BAR */
+        .cyber-progress {
+            height: 10px;
+            background: rgba(0, 240, 255, 0.1);
+            border-radius: 0;
+            overflow: hidden;
+        }
+
+        .cyber-progress-bar {
+            background: linear-gradient(90deg, var(--cyber-blue), var(--cyber-purple));
+            transition: width 1s ease;
+        }
+
+        /* GLOWING TEXT */
+        .glow {
+            text-shadow: 0 0 10px var(--cyber-blue), 0 0 20px var(--cyber-blue);
+        }
+
+        /* 3D TILT EFFECT */
+        .tilt-card {
+            transition: transform 0.3s;
+        }
+
+        .tilt-card:hover {
+            transform: perspective(1000px) rotateX(5deg) rotateY(5deg);
+        }
+    </style>
+</head>
+<body>
+    <!-- Matrix Scanlines Background -->
+    <div class="scanlines"></div>
+
+    <!-- Navigation -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-transparent py-3">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                <span class="cyber-glitch fw-bold fs-3">DEEP<span class="glow">SCAN</span></span>
+                <span class="badge bg-danger pulse ms-2">AI</span>
+            </a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav ms-auto">
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" href="#home">HOME</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" href="#detect">SCAN</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" href="#tech">TECH</a>
+                    </li>
+                    <li class="nav-item mx-2">
+                        <a class="nav-link" href="#about">ABOUT</a>
+                    </li>
+                </ul>
+                <a href="#detect" class="btn cyber-btn ms-lg-3 px-4">
+                    <i class="fas fa-bolt me-2"></i> LIVE SCAN
+                </a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section id="home" class="py-5">
+        <div class="container py-5">
+            <div class="row align-items-center">
+                <div class="col-lg-6 mb-5 mb-lg-0">
+                    <h1 class="display-3 fw-bold mb-4 cyber-glitch">
+                        CYBERNETIC <span class="glow">DEEPFAKE</span> DETECTION
+                    </h1>
+                    <p class="lead mb-4" style="color: rgba(255,255,255,0.8);">
+                        Next-gen AI defense against synthetic media threats. Powered by pyVHR, Bi-LSTM, CNN, Transformer, VAE.
+                    </p>
+                    <div class="d-flex gap-3">
+                        <a href="#detect" class="btn cyber-btn btn-lg px-4">
+                            <i class="fas fa-search me-2"></i> SCAN NOW
+                        </a>
+                        <a href="#tech" class="btn btn-outline-light btn-lg px-4">
+                            <i class="fas fa-microchip me-2"></i> TECH SPECS
+                        </a>
+                    </div>
+                </div>
+                <div class="col-lg-6">
+                    <div class="cyber-card tilt-card p-4 h-100">
+                        <div class="text-center">
+                            <div class="position-relative" style="padding-bottom: 56.25%;">
+                                <div class="position-absolute top-0 start-0 w-100 h-100 d-flex justify-content-center align-items-center">
+                                    <div class="text-center">
+                                        <i class="fas fa-robot fs-1 mb-3" style="color: var(--cyber-blue);"></i>
+                                        <h4 class="mb-3">REAL-TIME AI ANALYSIS</h4>
+                                        <div class="d-flex justify-content-center gap-4">
+                                            <div class="text-center">
+                                                <div class="fs-2 fw-bold" style="color: var(--cyber-blue);">97.2%</div>
+                                                <div>ACCURACY</div>
+                                            </div>
+                                            <div class="text-center">
+                                                <div class="fs-2 fw-bold" style="color: var(--cyber-blue);">Video(10 min), Image(10 Sec)</div>
+                                                <div>SPEED</div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="position-absolute bottom-0 start-0 w-100 px-3 py-2" style="background: rgba(0,0,0,0.7);">
+                                    <div class="d-flex justify-content-between">
+                                        <span>SYSTEM STATUS</span>
+                                        <span class="text-success">ACTIVE</span>
+                                    </div>
+                                    <div class="progress mt-1" style="height: 3px;">
+                                        <div class="progress-bar bg-success" role="progressbar" style="width: 100%"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Detection Section -->
+    <section id="detect" class="py-5">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-8">
+                    <div class="cyber-card tilt-card p-4 p-md-5">
+                        <div class="text-center mb-5">
+                            <h2 class="cyber-glitch mb-3">NEURAL MEDIA SCAN</h2>
+                            <p class="mb-0" style="color: rgba(255,255,255,0.7);">
+                                Upload suspected media for analysis
+                            </p>
+                        </div>
+                        
+                        <div class="text-center mb-4">
+                            <div class="btn-group" role="group">
+                                <button type="button" class="btn btn-outline-primary active cyber-btn" id="imageTab">
+                                    <i class="fas fa-image me-2"></i> IMAGE
+                                </button>
+                                <button type="button" class="btn btn-outline-primary cyber-btn" id="videoTab">
+                                    <i class="fas fa-video me-2"></i> VIDEO
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Image Upload -->
+                        <div id="imageUpload">
+                            <div class="cyber-upload rounded p-5 text-center mb-4">
+                                <i class="fas fa-cloud-upload-alt fs-1 mb-3" style="color: var(--cyber-blue);"></i>
+                                <h5 class="mb-2">DROP MEDIA FILE HERE</h5>
+                                <p class="mb-3" style="color: rgba(255,255,255,0.5);">Supports: JPG, PNG, WEBP</p>
+                                <input type="file" id="imageInput" accept="image/*" class="d-none">
+                                <button class="btn cyber-btn px-4" onclick="document.getElementById('imageInput').click()">
+                                    <i class="fas fa-folder-open me-2"></i> BROWSE
+                                </button>
+                            </div>
+                            
+                            <div class="text-center">
+                                <button class="btn cyber-btn btn-lg px-5" id="analyzeImage">
+                                    <i class="fas fa-bolt me-2"></i> INITIATE SCAN
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <!-- Video Upload -->
+                        <div id="videoUpload" style="display: none;">
+                            <div class="cyber-upload rounded p-5 text-center mb-4">
+                                <i class="fas fa-video fs-1 mb-3" style="color: var(--cyber-blue);"></i>
+                                <h5 class="mb-2">DROP VIDEO FILE HERE</h5>
+                                <p class="mb-3" style="color: rgba(255,255,255,0.5);">Supports: MP4, MOV, AVI</p>
+                                <input type="file" id="videoInput" accept="video/*" class="d-none">
+                                <button class="btn cyber-btn px-4" onclick="document.getElementById('videoInput').click()">
+                                    <i class="fas fa-folder-open me-2"></i> BROWSE
+                                </button>
+                            </div>
+                            
+                            <div class="text-center">
+                                <button class="btn cyber-btn btn-lg px-5" id="analyzeVideo">
+                                    <i class="fas fa-bolt me-2"></i> INITIATE SCAN
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Results Section -->
+            <div class="row justify-content-center mt-5" id="resultsSection" style="display: none;">
+                <div class="col-lg-10">
+                    <div class="cyber-card tilt-card p-4 p-md-5">
+                        <div class="text-center mb-5">
+                            <h2 class="cyber-glitch">ANALYSIS REPORT</h2>
+                            <div class="d-flex justify-content-center mt-3">
+                                <div class="px-3 border-end border-secondary">
+                                    <small class="text-muted">SCAN ID</small>
+                                    <div>DSCN-<span id="scanId">XK78H2J9</span></div>
+                                </div>
+                                <div class="px-3">
+                                    <small class="text-muted">TIMESTAMP</small>
+                                    <div id="scanTimestamp">2023-11-15 14:30:22 UTC</div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-5 mb-4 mb-md-0">
+                                <div class="cyber-card h-100 p-4">
+                                    <h5 class="text-center mb-4">
+                                        <i class="fas fa-eye me-2"></i> MEDIA PREVIEW
+                                    </h5>
+                                    <div id="mediaPreview" class="mb-3" style="min-height: 200px;"></div>
+                                    <div class="cyber-card p-3 mt-3">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <small class="text-muted">FILE NAME</small>
+                                            <small id="fileName">sample.jpg</small>
+                                        </div>
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <small class="text-muted">RESOLUTION</small>
+                                            <small id="fileResolution">1920x1080</small>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <small class="text-muted">SIZE</small>
+                                            <small id="fileSize">2.4 MB</small>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-7">
+                                <div class="cyber-card h-100 p-4">
+                                    <h5 class="text-center mb-4">
+                                        <i class="fas fa-chart-bar me-2"></i> DEEPFAKE METRICS
+                                    </h5>
+                                    
+                                    <div class="mb-4">
+                                        <div class="d-flex justify-content-between mb-2">
+                                            <span>SYNTHETIC CONFIDENCE</span>
+                                            <span id="confidenceValue">87%</span>
+                                        </div>
+                                        <div class="cyber-progress mb-2">
+                                            <div class="cyber-progress-bar" id="confidenceBar" style="width: 87%;"></div>
+                                        </div>
+                                        <div class="d-flex justify-content-between">
+                                            <small class="text-muted">REAL</small>
+                                            <small class="text-muted">FAKE</small>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <h6>
+                                            <i class="fas fa-shield-alt me-2"></i> VERDICT
+                                        </h6>
+                                        <div class="cyber-card p-3 mb-0" id="predictionResult">
+                                            <div class="d-flex align-items-center">
+                                                <i class="fas fa-robot me-3 fs-4" style="color: var(--cyber-blue);"></i>
+                                                <div>
+                                                    <strong id="predictionText">HIGH PROBABILITY OF SYNTHETIC MEDIA</strong><br>
+                                                    <small class="text-muted" id="predictionSubtext">Confidence threshold exceeded by 37%</small>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="mb-4">
+                                        <h6>
+                                            <i class="fas fa-search me-2"></i> ANOMALY DETECTION
+                                        </h6>
+                                        <div class="row g-2">
+                                            <div class="col-6">
+                                                <div class="cyber-card p-3">
+                                                    <div class="d-flex justify-content-between">
+                                                        <small>Facial Micro-Expressions</small>
+                                                        <small class="text-danger">87%</small>
+                                                    </div>
+                                                    <div class="progress mt-1" style="height: 3px;">
+                                                        <div class="progress-bar bg-danger" role="progressbar" style="width: 87%"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="cyber-card p-3">
+                                                    <div class="d-flex justify-content-between">
+                                                        <small>Eye Blink Patterns</small>
+                                                        <small class="text-warning">72%</small>
+                                                    </div>
+                                                    <div class="progress mt-1" style="height: 3px;">
+                                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 72%"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="cyber-card p-3">
+                                                    <div class="d-flex justify-content-between">
+                                                        <small>Texture Inconsistencies</small>
+                                                        <small class="text-warning">65%</small>
+                                                    </div>
+                                                    <div class="progress mt-1" style="height: 3px;">
+                                                        <div class="progress-bar bg-warning" role="progressbar" style="width: 65%"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            <div class="col-6">
+                                                <div class="cyber-card p-3">
+                                                    <div class="d-flex justify-content-between">
+                                                        <small>Frequency Artifacts</small>
+                                                        <small class="text-success">32%</small>
+                                                    </div>
+                                                    <div class="progress mt-1" style="height: 3px;">
+                                                        <div class="progress-bar bg-success" role="progressbar" style="width: 32%"></div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                                    <div class="text-center mt-4">
+                                        <button class="btn cyber-btn" id="newAnalysis">
+                                            <i class="fas fa-redo me-2"></i> NEW SCAN
+                                        </button>
+                                        <button class="btn btn-outline-light ms-2">
+                                            <i class="fas fa-download me-2"></i> EXPORT
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Technology Section -->
+    <section id="tech" class="py-5">
+        <div class="container py-5">
+            <div class="text-center mb-5">
+                <h2 class="cyber-glitch mb-3">Hybrid Components of Video Detection </h2>
+                <p class="mb-0" style="color: rgba(255,255,255,0.7);">
+                    rPPG for Signal extraction(BVP)
+                    Digital Signal Processing Techniques (ZCR, Mobility, Complexity, Spectral Entropy, Sample Entropy, Petrossian FD, Higuchi FD, DFA, and SVDAvg)
+                    Bi-Lstm for temporal Sequences detection 
+                </p>
+            </div>
+            
+            <div class="row g-4 mb-5">
+                <div class="col-md-4">
+                    <div class="cyber-card tilt-card h-100 p-4 text-center">
+                        <div class="spinner-border text-primary mb-4" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <h4 class="mb-3">Hybrid Components of Image Detection</h4>
+                        <p style="color: rgba(255,255,255,0.7);">
+                            Hyper-optimized convolutional layers with XceptionNet and VAE inspired feature extraction.
+                            Transformer-Based Contextual Refinement
+                            BiLSTM for Temporal Feature Learning
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="cyber-card tilt-card h-100 p-4 text-center">
+                        <div class="spinner-border text-primary mb-4" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <h4 class="mb-3">BIDIRECTIONAL LSTM</h4>
+                        <p style="color: rgba(255,255,255,0.7);">
+                            Temporal pattern recognition analyzing media in forward and reverse time.
+                        </p>
+                    </div>
+                </div>
+                <div class="col-md-4">
+                    <div class="cyber-card tilt-card h-100 p-4 text-center">
+                        <div class="spinner-border text-primary mb-4" role="status">
+                            <span class="visually-hidden">Loading...</span>
+                        </div>
+                        <h4 class="mb-3">NEURAL ATTENTION</h4>
+                        <p style="color: rgba(255,255,255,0.7);">
+                            Self-learning focus on the most suspicious regions in media.
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="cyber-card tilt-card p-4">
+                <div class="row align-items-center">
+                    <div class="col-lg-6 mb-4 mb-lg-0">
+                        <h3 class="mb-4 cyber-glitch">TECHNOLOGY OVERVIEW</h3>
+                        <p style="color: rgba(255,255,255,0.7);">
+                            Our hybrid model represents the cutting edge in synthetic media detection:
+                        </p>
+                        <ul class="list-unstyled">
+                            <li class="mb-2"><i class="fas fa-arrow-right me-2" style="color: var(--cyber-blue);"></i> 12-layer Custom CNN</li>
+                            <li class="mb-2"><i class="fas fa-arrow-right me-2" style="color: var(--cyber-blue);"></i> Bidirectional LSTM with 256 memory units</li>
+                            <li class="mb-2"><i class="fas fa-arrow-right me-2" style="color: var(--cyber-blue);"></i> Digital Signal Processing Techniques (12)</li>
+                            <li class="mb-2"><i class="fas fa-arrow-right me-2" style="color: var(--cyber-blue);"></i> Trained on 4.7M synthetic samples for images and 2000 Videos</li>
+                            <li class="mb-2"><i class="fas fa-arrow-right me-2" style="color: var(--cyber-blue);"></i> Real-time GPU-accelerated inference for rPPG process</li>
+                        </ul>
+                    </div>
+                    <div class="col-lg-6">
+                        <div class="cyber-card p-3">
+                            <img src="https://via.placeholder.com/600x400/0a0a12/00f0ff?text=AI+Architecture" 
+                                 alt="Model Architecture" 
+                                 class="img-fluid rounded">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-5">
+        <div class="container py-5">
+            <div class="row justify-content-center">
+                <div class="col-lg-8 text-center">
+                    <h2 class="cyber-glitch mb-4">ABOUT DEEPSCAN</h2>
+                    <p class="lead mb-4" style="color: rgba(255,255,255,0.8);">
+                        Defending reality in the age of synthetic media
+                    </p>
+                    <div class="cyber-card tilt-card p-4 p-md-5 mb-5">
+                        <p style="color: rgba(255,255,255,0.7);">
+                            DeepScan is an advanced AI initiative developing cutting-edge solutions for media authentication. 
+                            Our technology represents a breakthrough in deepfake detection, achieving 
+                            state-of-the-art results while maintaining real-time performance.
+                        </p>
+                        <p style="color: rgba(255,255,255,0.7);">
+                            As synthetic media generation evolves, we continuously adapt our models to stay ahead of adversarial techniques.
+                        </p>
+                        <div class="d-flex justify-content-center gap-3 mt-4">
+                            <a href="#" class="btn cyber-btn">
+                                <i class="fab fa-github me-2"></i> GITHUB
+                            </a>
+                            <a href="#" class="btn btn-outline-light">
+                                <i class="fas fa-file-alt me-2"></i> ResearchPaper
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <div class="row g-4">
+                        <div class="col-md-4">
+                            <div class="cyber-card tilt-card p-3 h-100">
+                                <h5 class="mb-3"><i class="fas fa-database me-2"></i> DATASETS</h5>
+                                <div class="fs-2 fw-bold" style="color: var(--cyber-blue);">4.7M+(Images) & 2000 (Videos)</div>
+                                <small class="text-muted">Synthetic samples</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="cyber-card tilt-card p-3 h-100">
+                                <h5 class="mb-3"><i class="fas fa-tachometer-alt me-2"></i> ACCURACY</h5>
+                                <div class="fs-2 fw-bold" style="color: var(--cyber-blue);">97.2%</div>
+                                <small class="text-muted">Detection rate</small>
+                            </div>
+                        </div>
+                        <div class="col-md-4">
+                            <div class="cyber-card tilt-card p-3 h-100">
+                                <h5 class="mb-3"><i class="fas fa-bolt me-2"></i> SPEED</h5>
+                                <div class="fs-2 fw-bold" style="color: var(--cyber-blue);">0.2s</div>
+                                <small class="text-muted">Per image</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="py-4" style="background: rgba(10,10,18,0.9); border-top: 1px solid var(--cyber-blue);">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-4 mb-4 mb-md-0">
+                    <h5 class="d-flex align-items-center">
+                        <span class="cyber-glitch fw-bold">DEEP<span class="glow">SCAN</span></span>
+                        <span class="badge bg-danger pulse ms-2">AI</span>
+                    </h5>
+                    <p class="mt-2 small" style="color: rgba(255,255,255,0.5);">
+                        Cybernetic deepfake detection for a secure digital future.
+                    </p>
+                </div>
+                <div class="col-md-2 mb-4 mb-md-0">
+                    <h6>NAVIGATION</h6>
+                    <ul class="list-unstyled small">
+                        <li class="mb-1"><a href="#" class="text-white-50">Home</a></li>
+                        <li class="mb-1"><a href="#detect" class="text-white-50">Scan</a></li>
+                        <li class="mb-1"><a href="#tech" class="text-white-50">Tech</a></li>
+                        <li class="mb-1"><a href="#about" class="text-white-50">About</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <h6>TECHNOLOGY</h6>
+                    <ul class="list-unstyled small">
+                        <li class="mb-1"><a href="#" class="text-white-50">CNN-BiLSTM</a></li>
+                        <li class="mb-1"><a href="#" class="text-white-50">Deep Learning</a></li>
+                        <li class="mb-1"><a href="#" class="text-white-50">Media Forensics</a></li>
+                        <li class="mb-1"><a href="#" class="text-white-50">Research</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h6>CONTACT</h6>
+                    <ul class="list-unstyled small">
+                        <li class="mb-1"><i class="fas fa-envelope me-2"></i> choudharyashok062001@gmail.com</li>
+                        <li class="mb-1"><i class="fas fa-map-marker-alt me-2"></i> Kalyan(W)</li>
+                        <li class="mb-1"><i class="fas fa-globe me-2"></i> deepscan.ai</li>
+                    </ul>
+                </div>
+            </div>
+            <hr class="my-4 bg-secondary">
+            <div class="text-center small" style="color: rgba(255,255,255,0.3);">
+                <p class="mb-0">&copy; 2023 DEEPSCAN AI RESEARCH. ALL RIGHTS RESERVED.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+
+    // Tab switching between image and video
+    document.getElementById('imageTab').addEventListener('click', function() {
+        this.classList.add('active');
+        document.getElementById('videoTab').classList.remove('active');
+        document.getElementById('imageUpload').style.display = 'block';
+        document.getElementById('videoUpload').style.display = 'none';
+    });
+    
+    document.getElementById('videoTab').addEventListener('click', function() {
+        this.classList.add('active');
+        document.getElementById('imageTab').classList.remove('active');
+        document.getElementById('videoUpload').style.display = 'block';
+        document.getElementById('imageUpload').style.display = 'none';
+    });
+
+    // Common timestamp generator
+    function updateTimestamp() {
+        const now = new Date();
+        document.getElementById('scanTimestamp').textContent = 
+            now.toISOString().split('T')[0] + ' ' + 
+            now.toTimeString().split(' ')[0] + ' UTC';
+    }
+
+    // Image Analysis Handler (if needed)
+    document.getElementById('analyzeImage').addEventListener('click', function() {
+        alert('Image analysis not implemented - focus on video analysis');
+    });
+
+    // Video Analysis Handler
+    document.getElementById('analyzeVideo').addEventListener('click', async function() {
+        const fileInput = document.getElementById('videoInput');
+        if (fileInput.files.length > 0) {
+            const originalText = this.innerHTML;
+            this.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span> ANALYZING...';
+            this.disabled = true;
+            updateTimestamp();
+
+            try {
+                const formData = new FormData();
+                formData.append('video', fileInput.files[0]);
+
+                const response = await fetch('/predict', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!response.ok) throw new Error('Analysis failed');
+                const result = await response.json();
+
+                // Update UI with results
+                document.getElementById('scanId').textContent = Math.random().toString(36).substring(2, 10).toUpperCase();
+                document.getElementById('confidenceValue').textContent = `${result.confidence}%`;
+                document.getElementById('predictionText').textContent = 
+                    result.label === "FAKE" ? 'HIGH PROBABILITY OF SYNTHETIC MEDIA' : 'AUTHENTIC MEDIA DETECTED';
+                document.getElementById('predictionSubtext').textContent = 
+                    result.label === "FAKE" ? `Confidence threshold exceeded by ${result.confidence - 50}%` : 'No significant anomalies detected';
+
+                // Update progress bar
+                const bar = document.getElementById('confidenceBar');
+                bar.style.width = `${result.confidence}%`;
+                
+                // Update file info
+                const file = fileInput.files[0];
+                document.getElementById('fileName').textContent = file.name;
+                document.getElementById('fileSize').textContent = (file.size / (1024 * 1024)).toFixed(1) + ' MB';
+                
+                // Show video preview
+                const videoURL = URL.createObjectURL(file);
+                document.getElementById('mediaPreview').innerHTML = `
+                    <video controls class="img-fluid rounded">
+                        <source src="${videoURL}" type="${file.type}">
+                        Your browser does not support the video tag.
+                    </video>
+                `;
+
+                // Show results
+                document.getElementById('resultsSection').style.display = 'block';
+                document.getElementById('resultsSection').scrollIntoView({ behavior: 'smooth' });
+
+            } catch (error) {
+                console.error('Error:', error);
+                alert('Analysis failed: ' + error.message);
+            } finally {
+                this.innerHTML = originalText;
+                this.disabled = false;
+            }
+        } else {
+            alert('Please select a video first');
+        }
+    });
+
+    // File input handlers
+    document.getElementById('imageInput').addEventListener('change', updateTimestamp);
+    document.getElementById('videoInput').addEventListener('change', updateTimestamp);
+
+    // New analysis button
+    document.getElementById('newAnalysis').addEventListener('click', function() {
+        document.getElementById('resultsSection').style.display = 'none';
+        document.getElementById('imageInput').value = '';
+        document.getElementById('videoInput').value = '';
+        document.getElementById('mediaPreview').innerHTML = '';
+    });
+</script>
+</body>
+</html>
+
